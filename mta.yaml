@@ -35,6 +35,26 @@ modules:
       buildpack: nodejs_buildpack
     requires:
       - name: CapApplication-db
+  - name: CapApplication
+    type: approuter.nodejs
+    path: app/router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: CapApplication-auth
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
 
 resources:
   - name: CapApplication-auth
@@ -46,6 +66,24 @@ resources:
       config:
         xsappname: CapApplication-${org}-${space}
         tenant-mode: dedicated
+        role-collections:
+          - name: 'manager (CapApplication ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.manager'
+          - name: 'Employee (CapApplication ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Employee'
+          - name: 'User (CapApplication ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.User'
+        oauth2-configuration:
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+    requires:
+      - name: app-api
   - name: CapApplication-db
     type: com.sap.xs.hdi-container
     parameters:
