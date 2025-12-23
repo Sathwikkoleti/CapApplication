@@ -1,4 +1,6 @@
 {
+  "xsappname": "Sathwik",
+  "tenant-mode": "dedicated",
   "scopes": [
     {
       "name": "$XSAPPNAME.manager",
