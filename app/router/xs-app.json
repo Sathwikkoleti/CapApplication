@@ -1,15 +1,15 @@
 {
   "xsappname": "Sathwik",
   "tenant-mode": "dedicated",
-  "welcomeFile": "webapp/webapp/",
+  "welcomeFile": "Sathwik/webapp/",
   "authenticationMethod": "route",
   "sessionTimeout": 100,
   "pluginMetadataEndpoint": "/metadata",
   "routes": [
     {
-      "source": "^/webapp/webapp/(.*)",
+      "source": "^/Sathwik/webapp/(.*)",
       "target": "$1",
-      "localDir": "webapp/webapp/",
+      "localDir": "Sathwikwebapp/",
       "authenticationType": "xsuaa"
     },
     {
